@@ -7,6 +7,7 @@ This project aims to rigorously and fundamentally understand and develop a GPT (
 ## Progress
 
 The project has been under active development for several months and is also currently under active development. Significant progress has been made in understanding and implementing the key components of the GPT model.
+Will keep uploading other files as soon as they are tested and in a shape to be uploaded.
 
 ## Project Goals
 
