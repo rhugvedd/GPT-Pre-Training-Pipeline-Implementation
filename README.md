@@ -4,7 +4,7 @@
 
 Apologies for the delay! I originally uploaded the [**SansGPT**](https://aclanthology.org/2024.icon-1.50/) project repo in **December 2024**, but I forgot to upload the **generalized version** of the GPT project to this repo at that time.  
 
-I had previously uploaded the **SansGPT-specific** files to the **SansGPT repository** [here](https://github.com/rhugvedd/SansGPT-Advancing-Generative-Pre-Training-in-Sanskrit), but the generalized versions were unintentionally left out.  
+I had previously uploaded the **SansGPT-specific** files to the **SansGPT repository** [here](https://github.com/rhugvedd/SansGPT-Advancing-Generative-Pre-Training-in-Sanskrit) in December 2024, but the generalized versions were unintentionally left out.  
 
 This repository now includes all the **missing files**, which have only **minor differences** compared to the SansGPT files.  
 
