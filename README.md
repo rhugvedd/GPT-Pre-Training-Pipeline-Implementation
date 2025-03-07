@@ -1,24 +1,53 @@
-# GPT Model Development from Scratch
+# GPT Model Development from Scratch  
 
-## Overview
+## ⚠️ Important Notice  
 
-This project aims to rigorously and fundamentally understand and develop a GPT (Generative Pre-trained Transformer) model from scratch. The goal is to gain a deep understanding of the core components and processes involved in building a GPT model, including tokenization, pre-training, and fine-tuning.
+Apologies for the delay! I originally uploaded the [**SansGPT**](https://aclanthology.org/2024.icon-1.50/) project repo in **December 2024**, but I forgot to upload the **generalized version** of the GPT project to this repo at that time.  
 
-## Progress
+I had previously uploaded the **SansGPT-specific** files to the **SansGPT repository** [here](https://github.com/rhugvedd/SansGPT-Advancing-Generative-Pre-Training-in-Sanskrit), but the generalized versions were unintentionally left out.  
 
-The project has been under active development for several months and is also currently under active development. Significant progress has been made in understanding and implementing the key components of the GPT model.
-Will keep uploading other files as soon as they are tested and in a shape to be uploaded.
+This repository now includes all the **missing files**, which have only **minor differences** compared to the SansGPT files.  
 
-## Project Goals
+These files were **developed before December 2024**—they are **not recent additions**. I sincerely apologize for any inconvenience caused.  
 
-- **Tokenization**: Understand and implement various tokenization techniques to preprocess text data for model training. Understand the effects of tokenization on model performance.
-- **Pre-Training**: Develop the foundational architecture of the GPT model, implement and understand the pre-training pipe line.
-- **Fine-Tuning**: Fine-tune the pre-trained model on specific tasks to enhance its performance on domain-specific applications.
+---  
 
-## Usage
+## Overview  
 
-Detailed instructions on how to use the tokenization, pre-training, and fine-tuning modules will be provided in subsequent updates.
+This repository contains the complete implementation of a **GPT (Generative Pre-trained Transformer) model**, built from scratch. The project is designed to provide a **fundamental and rigorous understanding** of the core components of a GPT-based architecture.  
 
-## Contact
+It includes key stages such as **tokenization, pre-training, supervised fine-tuning**, covering both theoretical insights and practical implementation.  
 
-For any questions or suggestions, please open an issue in the repository or contact me at[rhugved.c@neuralcurve.com].
+## 📅 Development Timeline  
+
+The project was actively developed **from February 2024 to December 2024**. All the files in this repository were created before December 2024, and this upload ensures their availability.  
+
+## 🚀 Project Goals  
+
+- **Tokenization**  
+  Implement and analyze different tokenization techniques (including Byte Pair Encoding) to optimize text preprocessing for training deep learning models.  
+- **Pre-Training**  
+  Develop the core GPT architecture and implement a **pre-training pipeline** for learning language representations.  
+- **Supervised Fine-Tuning**
+  Fine-tune the pre-trained model on specific tasks to improve its performance in domain-specific applications.  
+- **Reinforcement Learning**  
+  Explore reinforcement learning techniques for improving model performance beyond supervised learning.  
+
+## 📂 Repository Structure  
+
+This repo includes:  
+
+- **BPETokenizer.py** → Tokenization module (Byte Pair Encoding)  
+- **DataLoader.py** → Data loading and preprocessing utilities  
+- **FineTuneConfig.py / TrainConfig.py** → Configuration files for fine-tuning and training  
+- **FineTuner.py / Trainer.py** → Implementation of fine-tuning and pre-training logic  
+- **Fine-Tune-Pipeline.py / Pre-Train-Pipeline.py** → Scripts for executing fine-tuning and pre-training pipelines  
+- **Transformer.py** → Core GPT model implementation  
+- **TrainVocab.py** → Vocabulary training module  
+- **README.md** → Project documentation  
+
+## 📬 Contact  
+
+For any questions, feedback, or suggestions, feel free to **open an issue** in this repository or contact me at:  
+
+📧 [rhugved.c@neuralcurve.com](mailto:rhugved.c@neuralcurve.com)  
