@@ -4,7 +4,7 @@ from typing import Optional
 
 class Transformer(nn.Module):
     def __init__(
-                    self, 
+                    self,
                     vocab_size:int,
                     d_model:int,
                     enc_context_size:int,
@@ -25,18 +25,13 @@ class Transformer(nn.Module):
         self.num_encoder_blocks = num_encoder_blocks
         self.num_decoder_blocks = num_decoder_blocks
 
-        # TODO: See Transformer paper Section 3.4 - The weigths of embedding layers have to be multiplied by sqrt(d_model)
         self.token_embedding = nn.Embedding(vocab_size, d_model)
 
-        # TODO: Check the change introduced here
-        # self.token_embedding.weight.data.normal_(mean=0.0, std=d_model ** -0.5)
         torch.nn.init.normal_(self.token_embedding.weight, mean=0.0, std=0.02)
 
-        # TODO: Check the change introduced here
-        # self.enc_pos_encoding = PositionalEncoding(enc_context_size, d_model, pos_enc_dropout)
-        # self.dec_pos_encoding = PositionalEncoding(dec_context_size, d_model, pos_enc_dropout)
         self.enc_pos_encoding = nn.Embedding(enc_context_size, d_model)
         self.dec_pos_encoding = nn.Embedding(dec_context_size, d_model)
+
         torch.nn.init.normal_(self.enc_pos_encoding.weight, mean=0.0, std=0.01)
         torch.nn.init.normal_(self.dec_pos_encoding.weight, mean=0.0, std=0.01)
 
@@ -64,15 +59,12 @@ class Transformer(nn.Module):
 
         self.head = nn.Linear(d_model, vocab_size)
 
-        # TODO: Check the change introduced here
-        # self.head.weight = self.token_embedding.weight
         self.token_embedding.weight = self.head.weight
         
         self.head.bias.data.zero_()
 
     def init_linear_weights(self, module):
         if isinstance(module, ResidualScaledLinear):
-            # TODO: Check the std dev setting here
             if module.is_encoder:
                 torch.nn.init.normal_(module.weight, mean=0.0, std = 0.02 * ((2 * self.num_encoder_blocks) ** -0.5))
             else:
@@ -80,8 +72,8 @@ class Transformer(nn.Module):
 
             if module.bias is not None:
                 torch.nn.init.zeros_(module.bias)
+
         elif isinstance(module, nn.Linear):
-            # TODO: Check the std dev setting here
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:
                 torch.nn.init.zeros_(module.bias)
@@ -131,15 +123,10 @@ class Decoder(nn.Module):
         self.pre_norm = pre_norm
         self.num_decoder_blocks = num_decoder_blocks
 
-        # TODO: See Transformer paper Section 3.4 - The weigths of embedding layers have to be multiplied by sqrt(d_model)
         self.token_embedding = nn.Embedding(vocab_size, d_model)
 
-        # TODO: Check the change introduced here
-        # self.token_embedding.weight.data.normal_(mean=0.0, std=d_model ** -0.5)
         torch.nn.init.normal_(self.token_embedding.weight, mean=0.0, std=0.02)
 
-        # TODO: Check the change introduced here
-        # self.pos_encoding = PositionalEncoding(context_size, d_model, pos_enc_dropout)
         self.pos_encoding = nn.Embedding(context_size, d_model)
         torch.nn.init.normal_(self.pos_encoding.weight, mean=0.0, std=0.01)
 
@@ -155,32 +142,28 @@ class Decoder(nn.Module):
         if pre_norm:
             self.dec_final_ln = nn.LayerNorm(d_model)
         
-        # TODO: Check these initializations
         self.apply(self.init_linear_weights)
+            
         self.head = nn.Linear(d_model, vocab_size)
 
-        # TODO: Check the change introduced here
-        # self.head.weight = self.token_embedding.weight
         self.token_embedding.weight = self.head.weight
         
         self.head.bias.data.zero_()
 
     def init_linear_weights(self, module):
         if isinstance(module, ResidualScaledLinear):
-            # TODO: Check the std dev setting here
             torch.nn.init.normal_(module.weight, mean=0.0, std = 0.02 * ((2 * self.num_decoder_blocks) ** -0.5))
 
             if module.bias is not None:
                 torch.nn.init.zeros_(module.bias)
+
         elif isinstance(module, nn.Linear):
-            # TODO: Check the std dev setting here
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:
                 torch.nn.init.zeros_(module.bias)
 
     def forward(self, X, attention_mask: Optional[torch.FloatTensor] = None):
 
-        # TODO: Check Positional Encoding
         pos = torch.arange(0, X.size(1), dtype=torch.long, device=X.device)
         dec_pos_enc = self.pos_encoding(pos)
         dec_token_emb = self.token_embedding(X)
@@ -211,7 +194,6 @@ class PositionalEncoding(nn.Module):
 
         position = torch.arange(0, context_size, dtype=torch.float)[:, None]
         
-        # TODO: Implementation of denominator by using exp function
         denominator = torch.pow(torch.tensor(10000), torch.arange(0, d_model, 2, dtype=torch.float) / d_model)
 
         pos_enc[:, 0::2] = torch.sin(position / denominator)
@@ -220,10 +202,6 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pos_enc', pos_enc)
 
     def forward(self, X):
-        # X += self.pos_enc[:X.size(0)]
-        # return self.dropout(X)
-
-        # TODO: Check this
         X = self.pos_enc[:X.size(1)]
         return X
 
@@ -247,7 +225,6 @@ class ScaledDotProductAttention(nn.Module):
         self.dim_keys = dim_keys
         self.mask_attention = mask_attention
 
-        #TODO: Bias Can be set to false
         self.queries = nn.Linear(d_model, dim_keys)
         self.keys = nn.Linear(d_model, dim_keys)
         self.values = nn.Linear(d_model, dim_values)
@@ -258,10 +235,7 @@ class ScaledDotProductAttention(nn.Module):
         if mask_attention:
             self.register_buffer('mask', torch.tril(torch.ones(context_size, context_size)))
 
-    # TODO: Check implementation of Scaled Dot product attention for the decoder layer
     def forward(self, X_Q, X_KV, attention_mask: Optional[torch.FloatTensor] = None):
-        
-        # TODO: Can use Flash Attention for better speed and efficiency.
 
         Q = self.queries(X_Q)
         K = self.keys(X_KV)
@@ -271,9 +245,7 @@ class ScaledDotProductAttention(nn.Module):
         if self.mask_attention and attention_mask == None:
             out = out.masked_fill(self.mask[:X_Q.size(1), :X_Q.size(1)] == 0, float('-inf'))
         elif self.mask_attention and attention_mask != None:
-            # TODO: Check this
-            # out = out.masked_fill(attention_mask == 0, float('-inf'))
-            out = out.masked_fill((attention_mask * self.mask[:X_Q.size(1), :X_Q.size(1)]) == 0, float('-inf'))
+            out = out.masked_fill((attention_mask.unsqueeze(-2) * self.mask[:X_Q.size(1), :X_Q.size(1)]) == 0, float('-inf'))
         
         out = self.softmax(out)
         out = self.dropout(out)
@@ -305,8 +277,6 @@ class MultiHeadAttention(nn.Module):
                                                                 mask_attention=mask_attention
                                                                 ) for _ in range(num_heads)])
 
-        # TODO: Check the change introduced here
-        # self.linear = nn.Linear(num_heads * dim_values, d_model)
         self.linear = ResidualScaledLinear(num_heads * dim_values, d_model, is_encoder)
         
         self.dropout = nn.Dropout(drop_prob)
@@ -334,8 +304,6 @@ class FeedForward(nn.Module):
 
         self.linear1 = nn.Linear(d_model, d_ff)
         
-        # TODO: Check the change introduced here
-        # self.linear2 = nn.Linear(d_ff, d_model)
         self.linear2 = ResidualScaledLinear(d_ff, d_model, is_encoder)
 
         self.relu = nn.ReLU()
