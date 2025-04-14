@@ -50,4 +50,4 @@ This repo includes:
 
 For any questions, feedback, or suggestions, feel free to **open an issue** in this repository or contact me at:  
 
-📧 [rhugved.c@neuralcurve.com](mailto:rhugved.c@neuralcurve.com)  
+📧 [rhugved.c@gmail.com](mailto:rhugved.c@gmail.com)  
